@@ -72,7 +72,7 @@ function App() {
           height: '480'
         }} />
       </header>
-      <h1 style={{position: 'absolute', bottom: '0', width: '100%', background: 'white'}}>Please wait for 20 seconds for the program to run.</h1>
+      <h3 style={{position: 'absolute', bottom: '0', width: '100%', background: 'white'}}>Depending on your device, usually it takes about 20 seconds for the program to run.</h3>
     </div>
   );
 }
