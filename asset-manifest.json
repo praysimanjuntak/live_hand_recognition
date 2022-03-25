@@ -1,23 +1,22 @@
 {
   "files": {
-    "main.css": "/live_hand_recognition/static/css/main.a617e044.chunk.css",
-    "main.js": "/live_hand_recognition/static/js/main.77b0e91a.chunk.js",
-    "main.js.map": "/live_hand_recognition/static/js/main.77b0e91a.chunk.js.map",
-    "runtime-main.js": "/live_hand_recognition/static/js/runtime-main.3056af04.js",
-    "runtime-main.js.map": "/live_hand_recognition/static/js/runtime-main.3056af04.js.map",
-    "static/js/2.3f5ebcc0.chunk.js": "/live_hand_recognition/static/js/2.3f5ebcc0.chunk.js",
-    "static/js/2.3f5ebcc0.chunk.js.map": "/live_hand_recognition/static/js/2.3f5ebcc0.chunk.js.map",
-    "static/js/3.4071558a.chunk.js": "/live_hand_recognition/static/js/3.4071558a.chunk.js",
-    "static/js/3.4071558a.chunk.js.map": "/live_hand_recognition/static/js/3.4071558a.chunk.js.map",
+    "main.css": "/live_hand_recognition/static/css/main.a2216194.chunk.css",
+    "main.js": "/live_hand_recognition/static/js/main.0de1b051.chunk.js",
+    "main.js.map": "/live_hand_recognition/static/js/main.0de1b051.chunk.js.map",
+    "runtime-main.js": "/live_hand_recognition/static/js/runtime-main.1856f60e.js",
+    "runtime-main.js.map": "/live_hand_recognition/static/js/runtime-main.1856f60e.js.map",
+    "static/js/2.b393f1d8.chunk.js": "/live_hand_recognition/static/js/2.b393f1d8.chunk.js",
+    "static/js/2.b393f1d8.chunk.js.map": "/live_hand_recognition/static/js/2.b393f1d8.chunk.js.map",
+    "static/js/3.f452dcd8.chunk.js": "/live_hand_recognition/static/js/3.f452dcd8.chunk.js",
+    "static/js/3.f452dcd8.chunk.js.map": "/live_hand_recognition/static/js/3.f452dcd8.chunk.js.map",
     "index.html": "/live_hand_recognition/index.html",
-    "static/css/main.a617e044.chunk.css.map": "/live_hand_recognition/static/css/main.a617e044.chunk.css.map",
-    "static/js/2.3f5ebcc0.chunk.js.LICENSE.txt": "/live_hand_recognition/static/js/2.3f5ebcc0.chunk.js.LICENSE.txt",
-    "static/media/logo.6ce24c58.svg": "/live_hand_recognition/static/media/logo.6ce24c58.svg"
+    "static/css/main.a2216194.chunk.css.map": "/live_hand_recognition/static/css/main.a2216194.chunk.css.map",
+    "static/js/2.b393f1d8.chunk.js.LICENSE.txt": "/live_hand_recognition/static/js/2.b393f1d8.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.3056af04.js",
-    "static/js/2.3f5ebcc0.chunk.js",
-    "static/css/main.a617e044.chunk.css",
-    "static/js/main.77b0e91a.chunk.js"
+    "static/js/runtime-main.1856f60e.js",
+    "static/js/2.b393f1d8.chunk.js",
+    "static/css/main.a2216194.chunk.css",
+    "static/js/main.0de1b051.chunk.js"
   ]
 }
