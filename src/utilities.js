@@ -30,7 +30,7 @@ const style = {
     20: { color: "white", size: 6 },
 };
 
-export const drawHand = async (predictions, ctx, setIsTouching) => {
+export const drawHand = async (predictions, ctx) => {
     if (predictions.length > 0) {
         predictions.forEach(async (prediction) => {
             const landmarks = prediction.landmarks;

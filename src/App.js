@@ -41,7 +41,7 @@ function App() {
       const hand = await net.estimateHands(video);
 
       const ctx = canvasRef.current.getContext('2d');
-      await drawHand(hand, ctx, setIsTouching);
+      await drawHand(hand, ctx);
       await handleDistance(hand);
     }
   }
@@ -79,10 +79,6 @@ function App() {
     <div className="App">
       <div className="App-header"> 
         <Webcam ref={webcamRef}
-        videoConstraints={{
-          width: 640,
-          height: 480
-        }}
         style={{
           position: 'absolute',
           marginLeft: 'auto',
