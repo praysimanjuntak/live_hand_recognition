@@ -109,7 +109,7 @@ export default function Game() {
     return (
         <div className="world" ref={worldRef}>
             <div className="score" ref={scoreRef}>0</div>
-            <div className="start-screen" ref={screenRef}>Press Any Key To Start</div>
+            <div className="start-screen" ref={screenRef}>Press Click To Start</div>
             <img alt="" src="imgs/ground.png" className="ground" ref={groundRef1}/>
             <img alt="" src="imgs/ground.png" className="ground" ref={groundRef2}/>
             <img alt="" src="imgs/dino-stationary.png" className="dino" ref={dinoRef}/>
