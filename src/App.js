@@ -71,6 +71,7 @@ function App() {
 
   useEffect(() => {
     runHandpose();
+    alert("Please use landscape view for optimal use")
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
