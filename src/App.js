@@ -56,7 +56,7 @@ function App() {
         const yDiff = thumbTipPoint[1] - indexFingerTipPoint[1]
         const dist = Math.sqrt(xDiff*xDiff + yDiff*yDiff)
     
-        if (dist < 25) {
+        if (dist < 30) {
             setIsTouching(true);
         } else {
             setIsTouching(false);
@@ -75,9 +75,14 @@ function App() {
   }, [])
 
   return (
+    <>
     <div className="App">
       <div className="App-header"> 
         <Webcam ref={webcamRef}
+        videoConstraints={{
+          width: 640,
+          height: 480
+        }}
         style={{
           position: 'absolute',
           marginLeft: 'auto',
@@ -86,8 +91,8 @@ function App() {
           right: '0',
           textAlign: 'center',
           zIndex: '9',
-          width: '100%',
-          height: '100%'
+          width: 'auto',
+          height: '60vh'
         }} />
         <canvas ref={canvasRef}
         style={{
@@ -98,13 +103,14 @@ function App() {
           right: '0',
           textAlign: 'center',
           zIndex: '9',
-          width: '100%',
-          height: '100%'
+          width: 'auto',
+          height: '60vh'
         }} />
       </div>
-      <Game/>
       {/* <h3 style={{width: '100%', background: 'white'}}>Depending on your device, usually it takes about 20 seconds for the program to run.</h3> */}
     </div>
+    <Game/>
+    </>
   );
 }
 
