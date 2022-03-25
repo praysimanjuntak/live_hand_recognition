@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/live_hand_recognition/static/css/main.a2216194.chunk.css",
-    "main.js": "/live_hand_recognition/static/js/main.0de1b051.chunk.js",
-    "main.js.map": "/live_hand_recognition/static/js/main.0de1b051.chunk.js.map",
+    "main.css": "/live_hand_recognition/static/css/main.1f126a56.chunk.css",
+    "main.js": "/live_hand_recognition/static/js/main.329a98bd.chunk.js",
+    "main.js.map": "/live_hand_recognition/static/js/main.329a98bd.chunk.js.map",
     "runtime-main.js": "/live_hand_recognition/static/js/runtime-main.1856f60e.js",
     "runtime-main.js.map": "/live_hand_recognition/static/js/runtime-main.1856f60e.js.map",
-    "static/js/2.b393f1d8.chunk.js": "/live_hand_recognition/static/js/2.b393f1d8.chunk.js",
-    "static/js/2.b393f1d8.chunk.js.map": "/live_hand_recognition/static/js/2.b393f1d8.chunk.js.map",
+    "static/js/2.9da8c7f8.chunk.js": "/live_hand_recognition/static/js/2.9da8c7f8.chunk.js",
+    "static/js/2.9da8c7f8.chunk.js.map": "/live_hand_recognition/static/js/2.9da8c7f8.chunk.js.map",
     "static/js/3.f452dcd8.chunk.js": "/live_hand_recognition/static/js/3.f452dcd8.chunk.js",
     "static/js/3.f452dcd8.chunk.js.map": "/live_hand_recognition/static/js/3.f452dcd8.chunk.js.map",
     "index.html": "/live_hand_recognition/index.html",
-    "static/css/main.a2216194.chunk.css.map": "/live_hand_recognition/static/css/main.a2216194.chunk.css.map",
-    "static/js/2.b393f1d8.chunk.js.LICENSE.txt": "/live_hand_recognition/static/js/2.b393f1d8.chunk.js.LICENSE.txt"
+    "static/css/main.1f126a56.chunk.css.map": "/live_hand_recognition/static/css/main.1f126a56.chunk.css.map",
+    "static/js/2.9da8c7f8.chunk.js.LICENSE.txt": "/live_hand_recognition/static/js/2.9da8c7f8.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.1856f60e.js",
-    "static/js/2.b393f1d8.chunk.js",
-    "static/css/main.a2216194.chunk.css",
-    "static/js/main.0de1b051.chunk.js"
+    "static/js/2.9da8c7f8.chunk.js",
+    "static/css/main.1f126a56.chunk.css",
+    "static/js/main.329a98bd.chunk.js"
   ]
 }
