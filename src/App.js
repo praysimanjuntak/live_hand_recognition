@@ -1,12 +1,15 @@
-import React, { useRef } from 'react';
-import logo from './logo.svg';
+import React, { useEffect, useRef, useState } from 'react';
+// import logo from './logo.svg';
 import './App.css';
+// eslint-disable-next-line no-unused-vars
 import * as tf from '@tensorflow/tfjs';
 import * as handpose from '@tensorflow-models/handpose';
 import Webcam from 'react-webcam';
 import { drawHand } from './utilities';
+import Game from './components/game/Game';
 
 function App() {
+  const [isTouching, setIsTouching] = useState(false);
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
 
@@ -38,15 +41,42 @@ function App() {
       const hand = await net.estimateHands(video);
 
       const ctx = canvasRef.current.getContext('2d');
-      drawHand(hand, ctx);
+      await drawHand(hand, ctx, setIsTouching);
+      await handleDistance(hand);
     }
   }
 
-  runHandpose();
+  const handleDistance = (predictions) => {
+    if (predictions.length > 0) {
+      predictions.forEach(async (prediction) => {
+        const landmarks = prediction.landmarks;
+        const thumbTipPoint = landmarks[4]
+        const indexFingerTipPoint = landmarks[8]
+        const xDiff = thumbTipPoint[0] - indexFingerTipPoint[0]
+        const yDiff = thumbTipPoint[1] - indexFingerTipPoint[1]
+        const dist = Math.sqrt(xDiff*xDiff + yDiff*yDiff)
+    
+        if (dist < 25) {
+            setIsTouching(true);
+        } else {
+            setIsTouching(false);
+        }
+      })
+    }
+  }
+
+  useEffect(() => {
+    document.dispatchEvent(new KeyboardEvent('keydown',{key:'p'}))
+  }, [isTouching])
+
+  useEffect(() => {
+    runHandpose();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div className="App">
-      <header className="App-header">
+      <div className="App-header"> 
         <Webcam ref={webcamRef}
         style={{
           position: 'absolute',
@@ -56,8 +86,8 @@ function App() {
           right: '0',
           textAlign: 'center',
           zIndex: '9',
-          width: '640',
-          height: '480'
+          width: '100%',
+          height: '100%'
         }} />
         <canvas ref={canvasRef}
         style={{
@@ -68,11 +98,12 @@ function App() {
           right: '0',
           textAlign: 'center',
           zIndex: '9',
-          width: '640',
-          height: '480'
+          width: '100%',
+          height: '100%'
         }} />
-      </header>
-      <h3 style={{position: 'absolute', bottom: '0', width: '100%', background: 'white'}}>Depending on your device, usually it takes about 20 seconds for the program to run.</h3>
+      </div>
+      <Game/>
+      {/* <h3 style={{width: '100%', background: 'white'}}>Depending on your device, usually it takes about 20 seconds for the program to run.</h3> */}
     </div>
   );
 }

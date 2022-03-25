@@ -30,11 +30,10 @@ const style = {
     20: { color: "gold", size: 6 },
 };
 
-export const drawHand = (predictions, ctx) => {
+export const drawHand = async (predictions, ctx, setIsTouching) => {
     if (predictions.length > 0) {
-        predictions.forEach((prediction) => {
+        predictions.forEach(async (prediction) => {
             const landmarks = prediction.landmarks;
-
             
             for (let j = 0; j < Object.keys(fingerJoints).length; j++) {
                 let finger = Object.keys(fingerJoints)[j];
