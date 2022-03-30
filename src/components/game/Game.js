@@ -108,6 +108,7 @@ export default function Game() {
 
     return (
         <div className="world" ref={worldRef}>
+            <p style={{width: '100%', background: 'white', textAlign: 'center'}}>Depending on your device, usually, it takes about 20 seconds for the program to run.</p>
             <div className="score" ref={scoreRef}>0</div>
             <div className="start-screen" ref={screenRef}>Press Click To Start</div>
             <img alt="" src="imgs/ground.png" className="ground" ref={groundRef1}/>

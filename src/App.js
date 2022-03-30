@@ -104,7 +104,6 @@ function App() {
           height: '60vh'
         }} />
       </div>
-      {/* <h3 style={{width: '100%', background: 'white'}}>Depending on your device, usually it takes about 20 seconds for the program to run.</h3> */}
     </div>
     <Game/>
     </>
