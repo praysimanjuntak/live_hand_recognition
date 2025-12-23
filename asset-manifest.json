@@ -1,22 +1,15 @@
 {
   "files": {
-    "main.css": "/live_hand_recognition/static/css/main.1f126a56.chunk.css",
-    "main.js": "/live_hand_recognition/static/js/main.4afddf14.chunk.js",
-    "main.js.map": "/live_hand_recognition/static/js/main.4afddf14.chunk.js.map",
-    "runtime-main.js": "/live_hand_recognition/static/js/runtime-main.1856f60e.js",
-    "runtime-main.js.map": "/live_hand_recognition/static/js/runtime-main.1856f60e.js.map",
-    "static/js/2.692e3155.chunk.js": "/live_hand_recognition/static/js/2.692e3155.chunk.js",
-    "static/js/2.692e3155.chunk.js.map": "/live_hand_recognition/static/js/2.692e3155.chunk.js.map",
-    "static/js/3.f452dcd8.chunk.js": "/live_hand_recognition/static/js/3.f452dcd8.chunk.js",
-    "static/js/3.f452dcd8.chunk.js.map": "/live_hand_recognition/static/js/3.f452dcd8.chunk.js.map",
+    "main.css": "/live_hand_recognition/static/css/main.8da45a03.css",
+    "main.js": "/live_hand_recognition/static/js/main.3029aac7.js",
+    "static/js/296.a6f0315a.chunk.js": "/live_hand_recognition/static/js/296.a6f0315a.chunk.js",
     "index.html": "/live_hand_recognition/index.html",
-    "static/css/main.1f126a56.chunk.css.map": "/live_hand_recognition/static/css/main.1f126a56.chunk.css.map",
-    "static/js/2.692e3155.chunk.js.LICENSE.txt": "/live_hand_recognition/static/js/2.692e3155.chunk.js.LICENSE.txt"
+    "main.8da45a03.css.map": "/live_hand_recognition/static/css/main.8da45a03.css.map",
+    "main.3029aac7.js.map": "/live_hand_recognition/static/js/main.3029aac7.js.map",
+    "296.a6f0315a.chunk.js.map": "/live_hand_recognition/static/js/296.a6f0315a.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/runtime-main.1856f60e.js",
-    "static/js/2.692e3155.chunk.js",
-    "static/css/main.1f126a56.chunk.css",
-    "static/js/main.4afddf14.chunk.js"
+    "static/css/main.8da45a03.css",
+    "static/js/main.3029aac7.js"
   ]
 }
