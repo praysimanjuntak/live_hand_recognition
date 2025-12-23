@@ -2,52 +2,69 @@ import {
   setCustomProperty,
   incrementCustomProperty,
   getCustomProperty,
-} from "./updateCustomProperty.js"
-import cactusImg from './imgs/cactus.png'
+} from "./updateCustomProperty.js";
+import cactusImg from './imgs/cactus.png';
 
-const SPEED = 0.05
-const CACTUS_INTERVAL_MIN = 500
-const CACTUS_INTERVAL_MAX = 2000
+// Cactus movement speed
+const CACTUS_SPEED = 0.05;
 
-let nextCactusTime
+// Spawn interval range (ms)
+const CACTUS_INTERVAL_MIN = 500;
+const CACTUS_INTERVAL_MAX = 2000;
+
+// Position where cactus is removed (off-screen left)
+const CACTUS_REMOVE_THRESHOLD = -100;
+
+// Starting position (off-screen right)
+const CACTUS_START_POSITION = 100;
+
+// State
+let nextCactusTime = CACTUS_INTERVAL_MIN;
+
 export function setupCactus() {
-  nextCactusTime = CACTUS_INTERVAL_MIN
-  document.querySelectorAll("[data-cactus]").forEach(cactus => {
-    cactus.remove()
-  })
+  nextCactusTime = CACTUS_INTERVAL_MIN;
+
+  // Remove all existing cacti
+  const cacti = document.querySelectorAll("[data-cactus]");
+  for (const cactus of cacti) {
+    cactus.remove();
+  }
 }
 
 export function updateCactus(delta, speedScale, worldRef) {
-  document.querySelectorAll("[data-cactus]").forEach(cactus => {
-    incrementCustomProperty(cactus, "--left", delta * speedScale * SPEED * -1)
-    if (getCustomProperty(cactus, "--left") <= -100) {
-      cactus.remove()
-    }
-  })
+  // Move existing cacti
+  const cacti = document.querySelectorAll("[data-cactus]");
+  for (const cactus of cacti) {
+    incrementCustomProperty(cactus, "--left", delta * speedScale * CACTUS_SPEED * -1);
 
-  if (nextCactusTime <= 0) {
-    createCactus(worldRef)
-    nextCactusTime =
-      randomNumberBetween(CACTUS_INTERVAL_MIN, CACTUS_INTERVAL_MAX) / speedScale
+    if (getCustomProperty(cactus, "--left") <= CACTUS_REMOVE_THRESHOLD) {
+      cactus.remove();
+    }
   }
-  nextCactusTime -= delta
+
+  // Spawn new cactus
+  if (nextCactusTime <= 0) {
+    createCactus(worldRef);
+    nextCactusTime = randomNumberBetween(CACTUS_INTERVAL_MIN, CACTUS_INTERVAL_MAX) / speedScale;
+  }
+  nextCactusTime -= delta;
 }
 
 export function getCactusRects() {
-  return [...document.querySelectorAll("[data-cactus]")].map(cactus => {
-    return cactus.getBoundingClientRect()
-  })
+  const cacti = document.querySelectorAll("[data-cactus]");
+  return Array.from(cacti).map(cactus => cactus.getBoundingClientRect());
 }
 
 function createCactus(worldRef) {
-  const cactus = document.createElement("img")
-  cactus.dataset.cactus = true
-  cactus.src = cactusImg
-  cactus.classList.add("cactus")
-  setCustomProperty(cactus, "--left", 100)
-  worldRef.current.append(cactus)
+  const cactus = document.createElement("img");
+  cactus.dataset.cactus = "true";
+  cactus.src = cactusImg;
+  cactus.alt = "Cactus obstacle";
+  cactus.classList.add("cactus");
+  setCustomProperty(cactus, "--left", CACTUS_START_POSITION);
+  worldRef.current.append(cactus);
 }
 
 function randomNumberBetween(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min)
+  return Math.floor(Math.random() * (max - min + 1) + min);
 }

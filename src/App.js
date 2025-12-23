@@ -1,112 +1,198 @@
-import React, { useEffect, useRef, useState } from 'react';
-// import logo from './logo.svg';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import './App.css';
-// eslint-disable-next-line no-unused-vars
-import * as tf from '@tensorflow/tfjs';
-import * as handpose from '@tensorflow-models/handpose';
+import '@tensorflow/tfjs-core';
+import '@tensorflow/tfjs-backend-webgl';
+import * as handPoseDetection from '@tensorflow-models/hand-pose-detection';
 import Webcam from 'react-webcam';
 import { drawHand } from './utilities';
 import Game from './components/game/Game';
 
+// Constants
+const DETECTION_INTERVAL_MS = 100;
+const PINCH_DISTANCE_THRESHOLD = 30;
+
+// Keypoint indices for the new hand-pose-detection API
+const THUMB_TIP_INDEX = 4;       // thumb_tip
+const INDEX_FINGER_TIP_INDEX = 8; // index_finger_tip
+
+// Estimated model load time in ms (for progress simulation)
+const ESTIMATED_LOAD_TIME_MS = 15000;
+const PROGRESS_UPDATE_INTERVAL_MS = 100;
+
 function App() {
   const [isTouching, setIsTouching] = useState(false);
+  const [showLandscapeHint, setShowLandscapeHint] = useState(true);
+  const [isModelLoading, setIsModelLoading] = useState(true);
+  const [loadingProgress, setLoadingProgress] = useState(0);
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
+  const intervalRef = useRef(null);
+  const detectorRef = useRef(null);
+  const progressIntervalRef = useRef(null);
 
-  const runHandpose = async () => {
-    const net = await handpose.load();
-    console.log('Handpose model loaded.');
-    // Loop and detect hands
-    setInterval(() => {
-      detect(net);
-    }, 100)
-  };
+  const handleDistance = useCallback((hands) => {
+    if (hands.length === 0) return;
 
-  const detect = async (net) => {
+    // Process first detected hand
+    const hand = hands[0];
+    const keypoints = hand.keypoints;
+    const thumbTip = keypoints[THUMB_TIP_INDEX];
+    const indexFingerTip = keypoints[INDEX_FINGER_TIP_INDEX];
+
+    // New API uses {x, y} objects instead of [x, y, z] arrays
+    const xDiff = thumbTip.x - indexFingerTip.x;
+    const yDiff = thumbTip.y - indexFingerTip.y;
+    const dist = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+
+    setIsTouching(dist < PINCH_DISTANCE_THRESHOLD);
+  }, []);
+
+  const detect = useCallback(async () => {
     if (
-      typeof webcamRef.current !== 'undefined' &&
-      webcamRef.current !== null &&
-      webcamRef.current.video.readyState === 4
+      !webcamRef.current ||
+      !canvasRef.current ||
+      webcamRef.current.video.readyState !== 4 ||
+      !detectorRef.current
     ) {
-      const video = webcamRef.current.video;
-      const videoWidth = webcamRef.current.video.videoWidth;
-      const videoHeight = webcamRef.current.video.videoHeight;
-
-      webcamRef.current.video.width = videoWidth;
-      webcamRef.current.video.height = videoHeight;
-
-      canvasRef.current.width = videoWidth;
-      canvasRef.current.height = videoHeight;
-
-      const hand = await net.estimateHands(video);
-
-      const ctx = canvasRef.current.getContext('2d');
-      await drawHand(hand, ctx);
-      await handleDistance(hand);
+      return;
     }
-  }
 
-  const handleDistance = (predictions) => {
-    if (predictions.length > 0) {
-      predictions.forEach(async (prediction) => {
-        const landmarks = prediction.landmarks;
-        const thumbTipPoint = landmarks[4]
-        const indexFingerTipPoint = landmarks[8]
-        const xDiff = thumbTipPoint[0] - indexFingerTipPoint[0]
-        const yDiff = thumbTipPoint[1] - indexFingerTipPoint[1]
-        const dist = Math.sqrt(xDiff*xDiff + yDiff*yDiff)
-    
-        if (dist < 30) {
-            setIsTouching(true);
-        } else {
-            setIsTouching(false);
-        }
-      })
+    const video = webcamRef.current.video;
+    const videoWidth = video.videoWidth;
+    const videoHeight = video.videoHeight;
+
+    video.width = videoWidth;
+    video.height = videoHeight;
+    canvasRef.current.width = videoWidth;
+    canvasRef.current.height = videoHeight;
+
+    const hands = await detectorRef.current.estimateHands(video);
+    const ctx = canvasRef.current.getContext('2d');
+
+    drawHand(hands, ctx);
+    handleDistance(hands);
+  }, [handleDistance]);
+
+  // Dispatch jump event when pinch state changes to true
+  useEffect(() => {
+    if (isTouching) {
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'p' }));
     }
-  }
+  }, [isTouching]);
 
+  // Initialize hand detector and detection loop
   useEffect(() => {
-    document.dispatchEvent(new KeyboardEvent('keydown',{key:'p'}))
-  }, [isTouching])
+    let mounted = true;
+    const startTime = Date.now();
 
-  useEffect(() => {
-    runHandpose();
-    alert("Please use landscape view for optimal use")
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    // Simulate progress bar (model doesn't provide real progress)
+    progressIntervalRef.current = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      // Use easing function to slow down as it approaches 90%
+      const rawProgress = Math.min(elapsed / ESTIMATED_LOAD_TIME_MS, 0.9);
+      const easedProgress = rawProgress * (2 - rawProgress); // Ease out
+      setLoadingProgress(Math.round(easedProgress * 100));
+    }, PROGRESS_UPDATE_INTERVAL_MS);
+
+    const initDetector = async () => {
+      const model = handPoseDetection.SupportedModels.MediaPipeHands;
+      const detectorConfig = {
+        runtime: 'tfjs',
+        modelType: 'full',
+        maxHands: 1,
+      };
+
+      const detector = await handPoseDetection.createDetector(model, detectorConfig);
+
+      if (!mounted) return;
+
+      // Stop progress simulation and animate to 100%
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current);
+      }
+      setLoadingProgress(100);
+
+      detectorRef.current = detector;
+      console.log('Hand pose detection model loaded.');
+
+      // Small delay to show 100% before hiding loader
+      await new Promise(resolve => setTimeout(resolve, 500));
+      if (!mounted) return;
+      setIsModelLoading(false);
+
+      // Start detection loop
+      intervalRef.current = setInterval(() => {
+        detect();
+      }, DETECTION_INTERVAL_MS);
+    };
+
+    initDetector();
+
+    // Cleanup on unmount
+    return () => {
+      mounted = false;
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current);
+      }
+      if (detectorRef.current) {
+        detectorRef.current.dispose();
+      }
+    };
+  }, [detect]);
 
   return (
-    <>
     <div className="App">
-      <div className="App-header"> 
-        <Webcam ref={webcamRef}
-        style={{
-          position: 'absolute',
-          marginLeft: 'auto',
-          marginRight: 'auto',
-          left: '0',
-          right: '0',
-          textAlign: 'center',
-          zIndex: '9',
-          width: 'auto',
-          height: '60vh'
-        }} />
-        <canvas ref={canvasRef}
-        style={{
-          position: 'absolute',
-          marginLeft: 'auto',
-          marginRight: 'auto',
-          left: '0',
-          right: '0',
-          textAlign: 'center',
-          zIndex: '9',
-          width: 'auto',
-          height: '60vh'
-        }} />
+      {/* Full screen game */}
+      <Game isModelLoading={isModelLoading} loadingProgress={loadingProgress} />
+
+      {/* Floating camera panel */}
+      <div className={`camera-panel ${isModelLoading ? 'loading' : ''}`}>
+        {isModelLoading && (
+          <div className="loading-overlay">
+            <div className="loading-spinner" />
+            <span className="loading-text">Loading hand detection...</span>
+            <div className="loading-progress-bar">
+              <div
+                className="loading-progress-fill"
+                style={{ width: `${loadingProgress}%` }}
+              />
+            </div>
+            <span className="loading-percent">{loadingProgress}%</span>
+          </div>
+        )}
+        <Webcam
+          ref={webcamRef}
+          className="webcam-video"
+          mirrored={true}
+        />
+        <canvas
+          ref={canvasRef}
+          className="hand-canvas"
+        />
+        {!isModelLoading && (
+          <div className={`pinch-indicator ${isTouching ? 'active' : ''}`}>
+            {isTouching ? '✊ Pinching!' : '👌 Pinch to jump'}
+          </div>
+        )}
       </div>
+
+      {/* Landscape hint */}
+      {showLandscapeHint && (
+        <div className="landscape-hint">
+          <span>For best experience, use landscape mode</span>
+          <button
+            className="landscape-hint-close"
+            onClick={() => setShowLandscapeHint(false)}
+            aria-label="Dismiss"
+          >
+            ×
+          </button>
+        </div>
+      )}
     </div>
-    <Game/>
-    </>
   );
 }
 
