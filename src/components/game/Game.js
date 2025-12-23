@@ -146,7 +146,7 @@ export default function Game({ isModelLoading = true, loadingProgress = 0 }) {
     <div className="world" ref={worldRef}>
       <div className="score" ref={scoreRef}>0</div>
       <div className={`start-screen ${isModelLoading ? 'disabled' : ''}`} ref={screenRef}>
-        <div className="start-title">Dino Run</div>
+        <div className="start-title">DinoPinch</div>
         <div className="start-subtitle">
           {isModelLoading
             ? 'Loading hand detection model...'

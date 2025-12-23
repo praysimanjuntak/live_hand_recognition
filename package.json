@@ -1,7 +1,7 @@
 {
-  "name": "handpose",
-  "version": "0.1.0",
-  "homepage": "https://praysimanjuntak.github.io/live_hand_recognition",
+  "name": "dino-pinch",
+  "version": "1.0.0",
+  "homepage": "https://praysimanjuntak.github.io/dino-pinch",
   "private": true,
   "dependencies": {
     "@tensorflow-models/hand-pose-detection": "^2.0.1",
